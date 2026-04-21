@@ -4,7 +4,7 @@ import { env } from './config/env';
 import { client } from './core/discord.client';
 import { handleMessageCreate } from './events/messageCreate.event';
 
-client.once('ready', () => {
+client.once('clientReady', () => {
   console.log(`✅ [Maid Bot] Đã sẵn sàng phục vụ Goshujin-sama dưới tên: ${client.user?.tag}`);
   client.user?.setActivity('chăm sóc Goshujin-sama 🌸', {
     type: ActivityType.Playing,

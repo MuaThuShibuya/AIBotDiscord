@@ -38,4 +38,11 @@ export class MemoryService {
   public async clearMemory(userId: string): Promise<void> {
     await UserMemory.deleteOne({ userId });
   }
+
+  /**
+   * Xóa toàn bộ lịch sử của tất cả người dùng (Dành cho Admin reset hệ thống)
+   */
+  public async clearAllMemory(): Promise<void> {
+    await UserMemory.deleteMany({});
+  }
 }
