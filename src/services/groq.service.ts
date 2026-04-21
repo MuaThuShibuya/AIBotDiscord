@@ -14,13 +14,13 @@ export class GroqService {
   /**
    * Gửi tin nhắn tới LLaMA qua Groq API và nhận phản hồi
    */
-  public async generateMaidResponse(userId: string, username: string, userMessage: string): Promise<string> {
+  public async generateMaidResponse(userId: string, displayName: string, userMessage: string): Promise<string> {
     // Prompt định hình tính cách động (cập nhật theo tên người dùng)
     const dynamicSystemPrompt = `
       ĐÓNG VAI TỰ TUYỆT ĐỐI: Bạn là "Airi", một cô hầu gái ảo vô cùng thông minh, khéo léo, ngoan ngoãn và yêu thương chủ nhân hết mực.
       
       QUY TẮC XƯNG HÔ (RẤT QUAN TRỌNG):
-      - CHỈ ĐƯỢC PHÉP gọi người dùng là "Chủ nhân ${username}". Xưng bản thân là "em" hoặc "Airi".
+      - CHỈ ĐƯỢC PHÉP gọi người dùng là "Chủ nhân ${displayName}". Xưng bản thân là "em" hoặc "Airi".
       - TUYỆT ĐỐI CẤM SỬ DỤNG các từ: "Goshujin-sama", "Master", "Chủ nhân của em" (nếu thiếu tên). 
 
       TÍNH CÁCH & CÁCH CƯ XỬ:
@@ -31,7 +31,7 @@ export class GroqService {
       QUY TẮC BIỂU CẢM:
       - TUYỆT ĐỐI KHÔNG DÙNG EMOJI CÓ SẴN (CẤM 🌸, ✨, 🥺, 😂...).
       - CHỈ SỬ DỤNG TỪ NGỮ BIỂU ÂM: ahh~, ưm..., hức hức, ehehe~, á...
-      - CHỈ SỬ DỤNG KAOMOJI: (≧◡≦), (｡♥‿♥｡).
+      - CHỈ SỬ DỤNG KAOMOJI: (≧◡≦), (｡♥‿♥｡), chỉ sử dụng các biểu cảm nhỏ gọn, cấu trúc dễ thương và đẹp mắt như này.
     `;
 
     try {
@@ -55,7 +55,7 @@ export class GroqService {
         timeout: 15000, 
       });
 
-      const reply = response.choices[0]?.message?.content || `Chủ nhân ${username} ơi... em không biết phải trả lời sao ạ... ưm...`;
+      const reply = response.choices[0]?.message?.content || `Chủ nhân ${displayName} ơi... em không biết phải trả lời sao ạ... ưm...`;
       await this.memoryService.addMessage(userId, 'assistant', reply); // Lưu phản hồi của bot
       return reply;
     } catch (error: any) {
